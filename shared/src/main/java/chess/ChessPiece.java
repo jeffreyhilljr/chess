@@ -60,6 +60,27 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return String.format("%s %s", pieceColor, type);
+        char c;
+        if (type == PieceType.KING) {
+            c = 'k';
+        } else if (type == PieceType.QUEEN) {
+            c = 'q';
+        } else if (type == PieceType.BISHOP) {
+            c = 'b';
+        } else if (type == PieceType.ROOK) {
+            c = 'r';
+        } else if (type == PieceType.KNIGHT) {
+            c = 'n';
+        } else {
+            c = 'p';
+        }
+
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+            c = Character.toUpperCase(c);
+        } else {
+            c = Character.toLowerCase(c);
+        }
+
+        return String.format("%c", c);
     }
 }
