@@ -74,6 +74,27 @@ public class ChessBoard {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ChessBoard)) {
+            return false;
+        }
+        ChessBoard other = (ChessBoard) obj;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                ChessPosition position = new ChessPosition(i+1, j+1);
+                if (!(other.getPiece(position).equals(this.getPiece(position)))) {
+//                    System.out.print(i);
+//                    System.out.print(" ");
+//                    System.out.print(j);
+//                    System.out.print("\n");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int r = 7; r >= 0; r--) {
@@ -94,9 +115,11 @@ public class ChessBoard {
         return sb.toString();
     }
 
-//    public static void main(String[] args) {
-//        ChessBoard board = new ChessBoard();
-//        board.resetBoard();
-//        System.out.println(board);
-//    }
+    public static void main(String[] args) {
+        ChessBoard board = new ChessBoard();
+        board.resetBoard();
+        ChessBoard board2 = new ChessBoard();
+        board2.resetBoard();
+        System.out.println(board.equals(board2));
+    }
 }
