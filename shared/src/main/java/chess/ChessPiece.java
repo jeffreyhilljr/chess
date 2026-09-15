@@ -85,6 +85,7 @@ public class ChessPiece {
     }
 
 //    public static void main(String[] args) {
-//        ChessPiece whitePawn = new ChessPiece(...)
+//        ChessPiece whitePawn = new ChessPiece(ChessGame.TeamColor.BLACK, PieceType.PAWN);
+//        System.out.println(whitePawn);
 //    }
 }
