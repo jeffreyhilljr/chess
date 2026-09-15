@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.Arrays;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  * <p>
@@ -74,26 +76,20 @@ public class ChessBoard {
     }
 
     @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(board);
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ChessBoard)) {
+        if (this == obj) {
+            return true;
+        } else if (!(obj instanceof ChessBoard)) {
             return false;
+        } else {
+            ChessBoard other = (ChessBoard) obj;
+            return Arrays.deepEquals(this.board, other.board);
         }
-        ChessBoard other = (ChessBoard) obj;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                ChessPosition position = new ChessPosition(i+1, j+1);
-                if (other.getPiece(position) == null) {
-                    if (this.getPiece(position) == null) {
-                        //do nothing
-                    } else {
-                        return false;
-                    }
-                } else if (!(other.getPiece(position).equals(this.getPiece(position)))) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     @Override
@@ -117,13 +113,17 @@ public class ChessBoard {
         return sb.toString();
     }
 
-//    public static void main(String[] args) {
-//        ChessBoard board = new ChessBoard();
-//        board.resetBoard();
-//        board.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
-//        ChessBoard board2 = new ChessBoard();
-//        board2.resetBoard();
-//        board2.addPiece(new ChessPosition(5,4), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
-//        System.out.println(board.equals(board2));
-//    }
+    public static void main(String[] args) {
+        ChessBoard board = new ChessBoard();
+        board.resetBoard();
+        board.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
+        ChessBoard board2 = new ChessBoard();
+        board2.resetBoard();
+        board2.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
+        System.out.println(board.equals(board2));
+
+        int i = board.hashCode();
+        int j = board2.hashCode();
+        System.out.println(i == j);
+    }
 }
