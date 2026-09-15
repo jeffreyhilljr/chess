@@ -59,6 +59,15 @@ public class ChessPiece {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ChessPiece)) {
+            return false;
+        }
+        ChessPiece other = (ChessPiece) obj;
+        return this.pieceColor == other.pieceColor && this.type == other.type;
+    }
+
+    @Override
     public String toString() {
         char c;
         if (type == PieceType.KING) {
@@ -85,7 +94,13 @@ public class ChessPiece {
     }
 
 //    public static void main(String[] args) {
-//        ChessPiece whitePawn = new ChessPiece(ChessGame.TeamColor.BLACK, PieceType.PAWN);
-//        System.out.println(whitePawn);
+//        ChessPiece whitePawn = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.PAWN);
+//        ChessPiece whitePawn2 = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.PAWN);
+//        ChessPiece whiteRook = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.ROOK);
+//        ChessPiece blackPawn = new ChessPiece(ChessGame.TeamColor.BLACK, PieceType.PAWN);
+//        System.out.println(whitePawn.equals(whitePawn2));
+//        System.out.println(whitePawn.equals(blackPawn));
+//        System.out.println(whitePawn.equals(whiteRook));
+//
 //    }
 }
