@@ -113,17 +113,17 @@ public class ChessBoard {
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        ChessBoard board = new ChessBoard();
-        board.resetBoard();
-        board.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
-        ChessBoard board2 = new ChessBoard();
-        board2.resetBoard();
-        board2.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
-        System.out.println(board.equals(board2));
-
-        int i = board.hashCode();
-        int j = board2.hashCode();
-        System.out.println(i == j);
-    }
+//    public static void main(String[] args) {
+//        ChessBoard board = new ChessBoard();
+//        board.resetBoard();
+//        board.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
+//        ChessBoard board2 = new ChessBoard();
+//        board2.resetBoard();
+//        board2.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
+//        System.out.println(board.equals(board2));
+//
+//        int i = board.hashCode();
+//        int j = board2.hashCode();
+//        System.out.println(i == j);
+//    }
 }
