@@ -82,11 +82,13 @@ public class ChessBoard {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 ChessPosition position = new ChessPosition(i+1, j+1);
-                if (!(other.getPiece(position).equals(this.getPiece(position)))) {
-//                    System.out.print(i);
-//                    System.out.print(" ");
-//                    System.out.print(j);
-//                    System.out.print("\n");
+                if (other.getPiece(position) == null) {
+                    if (this.getPiece(position) == null) {
+                        //do nothing
+                    } else {
+                        return false;
+                    }
+                } else if (!(other.getPiece(position).equals(this.getPiece(position)))) {
                     return false;
                 }
             }
@@ -115,11 +117,13 @@ public class ChessBoard {
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        ChessBoard board = new ChessBoard();
-        board.resetBoard();
-        ChessBoard board2 = new ChessBoard();
-        board2.resetBoard();
-        System.out.println(board.equals(board2));
-    }
+//    public static void main(String[] args) {
+//        ChessBoard board = new ChessBoard();
+//        board.resetBoard();
+//        board.addPiece(new ChessPosition(4,5), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
+//        ChessBoard board2 = new ChessBoard();
+//        board2.resetBoard();
+//        board2.addPiece(new ChessPosition(5,4), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP));
+//        System.out.println(board.equals(board2));
+//    }
 }
