@@ -83,4 +83,8 @@ public class ChessPiece {
 
         return String.format("%c", c);
     }
+
+//    public static void main(String[] args) {
+//        ChessPiece whitePawn = new ChessPiece(...)
+//    }
 }
