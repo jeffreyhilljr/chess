@@ -10,6 +10,9 @@ import java.util.Collection;
  */
 public class ChessGame {
 
+    ChessBoard board;
+    TeamColor teamTurn;
+
     public ChessGame() {
 
     }
