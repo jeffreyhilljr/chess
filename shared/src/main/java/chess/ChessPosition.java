@@ -47,12 +47,11 @@ public class ChessPosition {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(row, col);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return String.format("Position: (%d, %d)", row, col);
     }
 }
