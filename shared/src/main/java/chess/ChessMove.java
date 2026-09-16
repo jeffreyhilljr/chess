@@ -16,6 +16,9 @@ public class ChessMove {
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
     }
 
     /**
@@ -53,6 +56,17 @@ public class ChessMove {
             return false;
         }
         ChessMove other = (ChessMove) obj;
-        return this.startPosition.equals(other.startPosition) && this.endPosition.equals(other.endPosition) && this.promotionPiece.equals(other.promotionPiece);
+        return Objects.equals(this.startPosition, other.startPosition) && Objects.equals(this.endPosition, other.endPosition) && Objects.equals(this.promotionPiece, other.promotionPiece);
     }
+
+    @Override
+    public String toString() {
+        return String.format("Move: %s, %s, %s", startPosition, endPosition, promotionPiece);
+    }
+
+//    public static void main(String[] args) {
+//        ChessMove move = new ChessMove(new ChessPosition(1, 1), new ChessPosition(1,2), null);
+//        System.out.println(move);
+//
+//    }
 }
