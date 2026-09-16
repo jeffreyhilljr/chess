@@ -1,6 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -53,8 +55,12 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-
-        throw new RuntimeException("Not implemented");
+        if (type == PieceType.KING) {
+            PieceMovesCalculator op = new KingMovesCalculator();
+            return op.pieceMovesGetter(board, myPosition);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
@@ -98,13 +104,16 @@ public class ChessPiece {
     }
 
 //    public static void main(String[] args) {
-//        ChessPiece whitePawn = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.PAWN);
-//        ChessPiece whitePawn2 = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.PAWN);
-//        ChessPiece whiteRook = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.ROOK);
-//        ChessPiece blackPawn = new ChessPiece(ChessGame.TeamColor.BLACK, PieceType.PAWN);
-//        System.out.println(whitePawn.equals(whitePawn2));
-//        System.out.println(whitePawn.equals(blackPawn));
-//        System.out.println(whitePawn.equals(whiteRook));
+//        ChessBoard board = new ChessBoard();
+//        board.resetBoard();
+//        ChessPiece whiteKing = board.getPiece(new ChessPosition(1, 5));
+//
+//        ChessPiece newKing = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.KING);
+//        board.addPiece(new ChessPosition(4,4), newKing);
+//        Collection<ChessMove> moves = whiteKing.pieceMoves(board, new ChessPosition(4, 4));
+//
+//
+//        System.out.println(moves);
 //
 //    }
 }
