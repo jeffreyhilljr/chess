@@ -55,10 +55,19 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        if (type == PieceType.KING) {
+        if (type == PieceType.BISHOP) {
+            PieceMovesCalculator op = new KingMovesCalculator();
+            return op.pieceMovesGetter(board, myPosition);
+        } else if (type == PieceType.KING) {
             PieceMovesCalculator op = new KingMovesCalculator();
             return op.pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.KNIGHT) {
+            PieceMovesCalculator op = new KnightMovesCalculator();
+            return op.pieceMovesGetter(board, myPosition);
+        } else if (type == PieceType.PAWN) {
+            PieceMovesCalculator op = new KnightMovesCalculator();
+            return op.pieceMovesGetter(board, myPosition);
+        } else if (type == PieceType.QUEEN) {
             PieceMovesCalculator op = new KnightMovesCalculator();
             return op.pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.ROOK) {
