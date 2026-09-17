@@ -65,9 +65,8 @@ public class ChessPiece {
             PieceMovesCalculator op = new KnightMovesCalculator();
             return op.pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.PAWN) {
-            //PieceMovesCalculator op = new PawnMovesCalculator();
-            //return op.pieceMovesGetter(board, myPosition);
-            return new ArrayList<>();
+            PieceMovesCalculator op = new PawnMovesCalculator();
+            return op.pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.QUEEN) {
             PieceMovesCalculator op = new QueenMovesCalculator();
             return op.pieceMovesGetter(board, myPosition);
