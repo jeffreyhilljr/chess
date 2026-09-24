@@ -110,18 +110,4 @@ public class ChessPiece {
 
         return String.format("%c", c);
     }
-
-//    public static void main(String[] args) {
-//        ChessBoard board = new ChessBoard();
-//        board.resetBoard();
-//        ChessPiece whiteKing = board.getPiece(new ChessPosition(1, 5));
-//
-//        ChessPiece newKing = new ChessPiece(ChessGame.TeamColor.WHITE, PieceType.KING);
-//        board.addPiece(new ChessPosition(4,4), newKing);
-//        Collection<ChessMove> moves = whiteKing.pieceMoves(board, new ChessPosition(4, 4));
-//
-//
-//        System.out.println(moves);
-//
-//    }
 }

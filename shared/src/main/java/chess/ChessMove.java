@@ -63,10 +63,4 @@ public class ChessMove {
     public String toString() {
         return String.format("%s to %s (%s)", startPosition, endPosition, promotionPiece);
     }
-
-//    public static void main(String[] args) {
-//        ChessMove move = new ChessMove(new ChessPosition(1, 1), new ChessPosition(1,2), null);
-//        System.out.println(move);
-//
-//    }
 }
