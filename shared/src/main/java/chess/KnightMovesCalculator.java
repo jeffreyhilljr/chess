@@ -14,7 +14,14 @@ public class KnightMovesCalculator implements PieceMovesCalculator {
         ChessGame.TeamColor team = board.getPiece(position).getTeamColor();
         ChessPiece.PieceType type = board.getPiece(position).getPieceType();
 
-        int[][] combinations = {{row + 1, col + 2}, {row - 1, col + 2}, {row + 1, col - 2}, {row - 1, col - 2}, {row + 2, col + 1}, {row + 2, col - 1}, {row - 2, col + 1}, {row - 2, col - 1}};
+        int[][] combinations = {{row + 1, col + 2},
+                                {row - 1, col + 2},
+                                {row + 1, col - 2},
+                                {row - 1, col - 2},
+                                {row + 2, col + 1},
+                                {row + 2, col - 1},
+                                {row - 2, col + 1},
+                                {row - 2, col - 1}};
 
         for (int[] combination : combinations) {
             int r = combination[0];

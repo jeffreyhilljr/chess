@@ -55,7 +55,9 @@ public class ChessMove {
         if (!(obj instanceof ChessMove other)) {
             return false;
         } else {
-            return Objects.equals(this.startPosition, other.startPosition) && Objects.equals(this.endPosition, other.endPosition) && Objects.equals(this.promotionPiece, other.promotionPiece);
+            return Objects.equals(this.startPosition, other.startPosition)
+                    && Objects.equals(this.endPosition, other.endPosition)
+                    && Objects.equals(this.promotionPiece, other.promotionPiece);
         }
     }
 
