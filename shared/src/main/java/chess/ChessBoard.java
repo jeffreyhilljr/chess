@@ -97,7 +97,7 @@ public class ChessBoard {
                     sb.append("  ");
                 } else {
                     sb.append(" ");
-                    sb.append(piece.toString());
+                    sb.append(piece);
                 }
             }
             sb.append(" ]\n");
