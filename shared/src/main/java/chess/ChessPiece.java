@@ -2,7 +2,6 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,8 +12,8 @@ import java.util.Objects;
  */
 public class ChessPiece {
 
-    private ChessGame.TeamColor pieceColor;
-    private ChessPiece.PieceType type;
+    private final ChessGame.TeamColor pieceColor;
+    private final ChessPiece.PieceType type;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
@@ -56,23 +55,17 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         if (type == PieceType.BISHOP) {
-            PieceMovesCalculator op = new BishopMovesCalculator();
-            return op.pieceMovesGetter(board, myPosition);
+            return new BishopMovesCalculator().pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.KING) {
-            PieceMovesCalculator op = new KingMovesCalculator();
-            return op.pieceMovesGetter(board, myPosition);
+            return new KingMovesCalculator().pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.KNIGHT) {
-            PieceMovesCalculator op = new KnightMovesCalculator();
-            return op.pieceMovesGetter(board, myPosition);
+            return new KnightMovesCalculator().pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.PAWN) {
-            PieceMovesCalculator op = new PawnMovesCalculator();
-            return op.pieceMovesGetter(board, myPosition);
+            return new PawnMovesCalculator().pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.QUEEN) {
-            PieceMovesCalculator op = new QueenMovesCalculator();
-            return op.pieceMovesGetter(board, myPosition);
+            return new QueenMovesCalculator().pieceMovesGetter(board, myPosition);
         } else if (type == PieceType.ROOK) {
-            PieceMovesCalculator op = new RookMovesCalculator();
-            return op.pieceMovesGetter(board, myPosition);
+            return new RookMovesCalculator().pieceMovesGetter(board, myPosition);
         } else {
             return new ArrayList<>();
         }
@@ -85,11 +78,11 @@ public class ChessPiece {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ChessPiece)) {
+        if (!(obj instanceof ChessPiece other)) {
             return false;
+        } else {
+            return this.pieceColor == other.pieceColor && this.type == other.type;
         }
-        ChessPiece other = (ChessPiece) obj;
-        return this.pieceColor == other.pieceColor && this.type == other.type;
     }
 
     @Override
