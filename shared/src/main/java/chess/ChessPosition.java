@@ -10,8 +10,8 @@ import java.util.Objects;
  */
 public class ChessPosition {
 
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
 
     public ChessPosition(int row, int col) {
         this.row = row;
@@ -23,7 +23,6 @@ public class ChessPosition {
      * 1 codes for the bottom row
      */
     public int getRow() {
-
         return row;
     }
 
@@ -32,17 +31,16 @@ public class ChessPosition {
      * 1 codes for the left column
      */
     public int getColumn() {
-
         return col;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ChessPosition)) {
+        if (!(obj instanceof ChessPosition other)) {
             return false;
+        } else {
+            return this.col == other.getColumn() && this.row == other.getRow();
         }
-        ChessPosition other = (ChessPosition) obj;
-        return this.col == other.getColumn() && this.row == other.getRow();
     }
 
     @Override
@@ -52,6 +50,6 @@ public class ChessPosition {
 
     @Override
     public String toString() {
-        return String.format("Position: (%d, %d)", row, col);
+        return String.format("(%d, %d)", row, col);
     }
 }
