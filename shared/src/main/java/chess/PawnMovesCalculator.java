@@ -18,7 +18,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
         return moves;
     }
 
-    void promotePawn(ChessBoard board, ChessPosition myPosition, ChessPosition newPosition, List<ChessMove> moves) {
+    void promotePawn(ChessPosition myPosition, ChessPosition newPosition, List<ChessMove> moves) {
         moves.add(new ChessMove(myPosition, newPosition, ChessPiece.PieceType.QUEEN));
         moves.add(new ChessMove(myPosition, newPosition, ChessPiece.PieceType.ROOK));
         moves.add(new ChessMove(myPosition, newPosition, ChessPiece.PieceType.KNIGHT));
@@ -35,7 +35,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
             if (inBounds(r, c) && board.getPiece(new ChessPosition(r, c)) != null &&
                     board.getPiece(myPosition).getTeamColor() != board.getPiece(new ChessPosition(r, c)).getTeamColor()) {
                 if (r == 1 || r == 8) {
-                    promotePawn(board, myPosition, new ChessPosition(r, c), moves);
+                    promotePawn(myPosition, new ChessPosition(r, c), moves);
                 } else {
                     moves.add(new ChessMove(myPosition, new ChessPosition(r, c), null));
                 }
@@ -44,7 +44,7 @@ public class PawnMovesCalculator implements PieceMovesCalculator {
 
         if (inBounds(r, col) && board.getPiece(new ChessPosition(r, col)) == null) {
             if (r == 1 || r == 8) {
-                promotePawn(board, myPosition, new ChessPosition(r, col), moves);
+                promotePawn(myPosition, new ChessPosition(r, col), moves);
             } else {
                 moves.add(new ChessMove(myPosition, new ChessPosition(r, col), null));
                 if (10*row + 25 * moveDirection == 45 &&

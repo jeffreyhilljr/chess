@@ -1,7 +1,6 @@
 package chess;
 
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 public interface PieceMovesCalculator {
     List<ChessMove> pieceMovesGetter(ChessBoard board, ChessPosition myPosition);
