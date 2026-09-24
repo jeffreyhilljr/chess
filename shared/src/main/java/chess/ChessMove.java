@@ -10,9 +10,9 @@ import java.util.Objects;
  */
 public class ChessMove {
 
-    private ChessPosition startPosition;
-    private ChessPosition endPosition;
-    private ChessPiece.PieceType promotionPiece;
+    private final ChessPosition startPosition;
+    private final ChessPosition endPosition;
+    private final ChessPiece.PieceType promotionPiece;
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
@@ -52,16 +52,16 @@ public class ChessMove {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ChessMove)) {
+        if (!(obj instanceof ChessMove other)) {
             return false;
+        } else {
+            return Objects.equals(this.startPosition, other.startPosition) && Objects.equals(this.endPosition, other.endPosition) && Objects.equals(this.promotionPiece, other.promotionPiece);
         }
-        ChessMove other = (ChessMove) obj;
-        return Objects.equals(this.startPosition, other.startPosition) && Objects.equals(this.endPosition, other.endPosition) && Objects.equals(this.promotionPiece, other.promotionPiece);
     }
 
     @Override
     public String toString() {
-        return String.format("Move: %s, %s, %s", startPosition, endPosition, promotionPiece);
+        return String.format("%s to %s (%s)", startPosition, endPosition, promotionPiece);
     }
 
 //    public static void main(String[] args) {
