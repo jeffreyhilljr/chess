@@ -16,6 +16,20 @@ public class ChessBoard {
 
     }
 
+    public ChessBoard(ChessBoard other) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (other.board[i][j] == null) {
+                    this.board[i][j] = null;
+                } else {
+                    ChessGame.TeamColor teamColor = other.board[i][j].getTeamColor();
+                    ChessPiece.PieceType type = other.board[i][j].getPieceType();
+                    this.board[i][j] = new ChessPiece(teamColor, type);
+                }
+            }
+        }
+    }
+
     /**
      * Adds a chess piece to the chessboard
      *

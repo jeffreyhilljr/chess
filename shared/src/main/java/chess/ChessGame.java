@@ -18,6 +18,11 @@ public class ChessGame {
 
     }
 
+    public ChessGame(ChessGame other) {
+        this.board = new ChessBoard(other.board);
+        this.teamTurn = other.teamTurn;
+    }
+
     /**
      * @return Which team's turn it is
      */
@@ -50,7 +55,23 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(startPosition);
+        if (piece == null) {
+            return null;
+        } else {
+            Collection<ChessMove> moves = piece.pieceMoves(board, startPosition);
+            Collection<ChessMove> validMoves = new ArrayList<>();
+            for (ChessMove move : moves) {
+                ChessPosition newPosition = move.getEndPosition();
+                ChessGame testMoveGame = new ChessGame(this);
+                testMoveGame.board.addPiece(newPosition, piece);
+                testMoveGame.board.removePiece(startPosition);
+                if (!testMoveGame.isInCheck(piece.getTeamColor())) {
+                    validMoves.add(move);
+                }
+            }
+            return validMoves;
+        }
     }
 
     /**
