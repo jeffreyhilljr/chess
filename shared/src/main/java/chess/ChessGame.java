@@ -154,6 +154,7 @@ public class ChessGame {
         if (!isInCheck(teamColor)) {
             return false;
         }
+        boolean isInCheck = true;
         for (int r = 1; r < 9; r++ ) {
             for (int c = 1; c < 9; c++) {
                 ChessPosition myPosition = new ChessPosition(r, c);
@@ -165,14 +166,12 @@ public class ChessGame {
                         ChessGame testMoveGame = new ChessGame(this);
                         testMoveGame.board.addPiece(newPosition, piece);
                         testMoveGame.board.removePiece(new ChessPosition(r, c));
-                        if (!testMoveGame.isInCheck(teamColor)) {
-                            return false;
-                        }
+                        isInCheck &= testMoveGame.isInCheck(teamColor);
                     }
                 }
             }
         }
-        return true;
+        return isInCheck;
     }
 
     /**
