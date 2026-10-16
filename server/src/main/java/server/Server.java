@@ -1,6 +1,9 @@
 package server;
 
 import io.javalin.*;
+import dataaccess.*;
+import service.*;
+import model.*;
 
 public class Server {
 
