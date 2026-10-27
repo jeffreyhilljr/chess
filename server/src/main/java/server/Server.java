@@ -3,17 +3,24 @@ package server;
 import io.javalin.*;
 import dataaccess.*;
 import service.*;
-import model.*;
 
 public class Server {
 
     private final Javalin javalin;
 
     public Server() {
-        javalin = Javalin.create(config -> config.staticFiles.add("web"));
+        AuthDAO authDAO = new MemoryAuthDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        UserDAO userDAO = new MemoryUserDAO();
 
-        // Register your endpoints and exception handlers here.
+        ClearService clearService = new ClearService(authDAO, gameDAO, userDAO);
+        GameService gameService = new GameService(authDAO, gameDAO);
+        UserService userService = new UserService(authDAO, userDAO);
 
+        ServerHandler serverHandler = new ServerHandler(clearService, gameService, userService);
+
+        javalin = Javalin.create(config -> config.staticFiles.add("web"))
+                .delete("/db", serverHandler::clear);
     }
 
     public int run(int desiredPort) {
