@@ -3,6 +3,8 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import io.javalin.http.Context;
+import model.LoginRequest;
+import model.LoginResult;
 import model.RegisterRequest;
 import model.RegisterResult;
 import service.ClearService;
@@ -34,6 +36,12 @@ public class ServerHandler {
         RegisterRequest registerRequest = gson.fromJson(ctx.body(), RegisterRequest.class);
         RegisterResult registerResult = userService.register(registerRequest);
         ctx.result(gson.toJson(registerResult));
+    }
+
+    public void login(Context ctx) throws DataAccessException, ServiceException {
+        LoginRequest loginRequest = gson.fromJson(ctx.body(), LoginRequest.class);
+        LoginResult loginResult = userService.login(loginRequest);
+        ctx.result(gson.toJson(loginResult));
     }
 
     public void handleDataAccessException(DataAccessException ex, Context ctx) {

@@ -23,6 +23,7 @@ public class Server {
         javalin = Javalin.create(config -> config.staticFiles.add("web"))
                 .delete("/db", serverHandler::clear)
                 .post("/user", serverHandler::register)
+                .post("/session", serverHandler::login)
                 .exception(DataAccessException.class, serverHandler::handleDataAccessException)
                 .exception(ServiceException.class, serverHandler::handleServiceException)
                 .exception(Exception.class, serverHandler::handleException);

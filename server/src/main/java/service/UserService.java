@@ -3,10 +3,7 @@ package service;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
-import model.AuthData;
-import model.RegisterRequest;
-import model.RegisterResult;
-import model.UserData;
+import model.*;
 import service.exception.*;
 
 import java.util.UUID;
@@ -47,7 +44,31 @@ public class UserService {
     }
 
 
-//    public LoginResult login(LoginRequest loginRequest) {}
+    public LoginResult login(LoginRequest loginRequest) throws DataAccessException, ServiceException {
+        if (loginRequest == null) {
+            throw new BadRequestException();
+        }
+
+        String username = loginRequest.username();
+        String password = loginRequest.password();
+
+        if (isMissing(username) || isMissing(password)) {
+            throw new BadRequestException();
+        }
+
+        UserData user = userDAO.getUser(username);
+
+        if (user == null) {
+            throw new UnauthorizedException();
+        }
+
+        AuthData auth = new AuthData(UUID.randomUUID().toString() , username);
+        authDAO.createAuth(auth);
+
+        return new LoginResult(username, auth.authToken());
+    }
+
+
 //    public void logout() {}
 
     private boolean isMissing(String input) {
