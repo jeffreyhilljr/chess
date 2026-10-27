@@ -26,6 +26,7 @@ public class Server {
                 .post("/session", serverHandler::login)
                 .delete("/session", serverHandler::logout)
                 .get("/game", serverHandler::listGames)
+                .post("/game", serverHandler::createGame)
                 .exception(DataAccessException.class, serverHandler::handleDataAccessException)
                 .exception(ServiceException.class, serverHandler::handleServiceException)
                 .exception(Exception.class, serverHandler::handleException);

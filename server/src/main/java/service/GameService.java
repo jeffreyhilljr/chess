@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.*;
 import model.*;
 import service.exception.*;
@@ -28,7 +29,26 @@ public class GameService {
     }
 
 
-//    public CreateGameResult createGame(CreateGameRequest createGameRequest) {}
+    public CreateGameResult createGame(CreateGameRequest createGameRequest, String authToken) throws DataAccessException, ServiceException {
+        if (authToken == null) {
+            throw new UnauthorizedException();
+        }
+
+        AuthData authData = authDAO.getAuth(authToken);
+
+        if (authData == null) {
+            throw new UnauthorizedException();
+        }
+
+        String gameName = createGameRequest.gameName();
+
+        GameData game = new GameData(0, null, null, gameName, new ChessGame());
+        GameData newGame = gameDAO.createGame(game);
+
+        return new CreateGameResult(newGame.gameID());
+    }
+
+
 //    public JoinGameResult joinGame(JoinGameRequest joinGameRequest) {}
 
 }

@@ -7,10 +7,14 @@ import java.util.*;
 
 public class MemoryGameDAO implements GameDAO {
     private final Map<Integer, GameData> games = new HashMap<>();
+    private int nextID = 1;
 
     @Override
-    public void createGame(GameData game) {
-        games.put(game.gameID(), game);
+    public GameData createGame(GameData game) {
+        GameData newGame = new GameData(nextID, game.whiteUsername(), game.blackUsername(), game.gameName(), game.chessGame());
+        games.put(newGame.gameID(), newGame);
+        nextID++;
+        return newGame;
     }
 
     @Override
@@ -49,5 +53,6 @@ public class MemoryGameDAO implements GameDAO {
     @Override
     public void clearGameData() {
         games.clear();
+        nextID = 1;
     }
 }

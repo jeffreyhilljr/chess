@@ -51,6 +51,12 @@ public class ServerHandler {
         ctx.result(gson.toJson(listGamesResult));
     }
 
+    public void createGame(Context ctx) throws DataAccessException, ServiceException {
+        CreateGameRequest createGameRequest = gson.fromJson(ctx.body(), CreateGameRequest.class);
+        CreateGameResult createGameResult = gameService.createGame(createGameRequest, ctx.header("authorization"));
+        ctx.result(gson.toJson(createGameResult));
+    }
+
     public void handleDataAccessException(DataAccessException ex, Context ctx) {
         ctx.status(500);
         ctx.result(errorJson(ex.getMessage()));
