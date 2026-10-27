@@ -20,7 +20,8 @@ public class Server {
         ServerHandler serverHandler = new ServerHandler(clearService, gameService, userService);
 
         javalin = Javalin.create(config -> config.staticFiles.add("web"))
-                .delete("/db", serverHandler::clear);
+                .delete("/db", serverHandler::clear)
+                .post("/user", serverHandler::register);
     }
 
     public int run(int desiredPort) {
