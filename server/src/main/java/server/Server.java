@@ -24,6 +24,7 @@ public class Server {
                 .delete("/db", serverHandler::clear)
                 .post("/user", serverHandler::register)
                 .post("/session", serverHandler::login)
+                .delete("/session", serverHandler::logout)
                 .exception(DataAccessException.class, serverHandler::handleDataAccessException)
                 .exception(ServiceException.class, serverHandler::handleServiceException)
                 .exception(Exception.class, serverHandler::handleException);

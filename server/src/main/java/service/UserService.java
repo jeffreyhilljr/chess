@@ -69,7 +69,19 @@ public class UserService {
     }
 
 
-//    public void logout() {}
+    public void logout(String authToken) throws DataAccessException, ServiceException {
+        if (authToken == null) {
+            throw new UnauthorizedException();
+        }
+
+        AuthData authData = authDAO.getAuth(authToken);
+
+        if (authData == null) {
+            throw new UnauthorizedException();
+        }
+
+        authDAO.deleteAuth(authToken);
+    }
 
     private boolean isMissing(String input) {
         return input == null || input.isBlank();

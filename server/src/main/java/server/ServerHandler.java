@@ -44,6 +44,11 @@ public class ServerHandler {
         ctx.result(gson.toJson(loginResult));
     }
 
+    public void logout(Context ctx) throws DataAccessException, ServiceException {
+        userService.logout(ctx.header("authorization"));
+        ctx.result("{}");
+    }
+
     public void handleDataAccessException(DataAccessException ex, Context ctx) {
         ctx.status(500);
         ctx.result(errorJson(ex.getMessage()));
