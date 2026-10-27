@@ -3,6 +3,7 @@ package server;
 import io.javalin.*;
 import dataaccess.*;
 import service.*;
+import service.exception.ServiceException;
 
 public class Server {
 
@@ -21,7 +22,10 @@ public class Server {
 
         javalin = Javalin.create(config -> config.staticFiles.add("web"))
                 .delete("/db", serverHandler::clear)
-                .post("/user", serverHandler::register);
+                .post("/user", serverHandler::register)
+                .exception(DataAccessException.class, serverHandler::handleDataAccessException)
+                .exception(ServiceException.class, serverHandler::handleServiceException)
+                .exception(Exception.class, serverHandler::handleException);
     }
 
     public int run(int desiredPort) {

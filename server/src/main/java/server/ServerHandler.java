@@ -10,6 +10,8 @@ import service.GameService;
 import service.UserService;
 import service.exception.ServiceException;
 
+import java.util.Map;
+
 
 public class ServerHandler {
     private final ClearService clearService;
@@ -34,4 +36,24 @@ public class ServerHandler {
         ctx.result(gson.toJson(registerResult));
     }
 
+    public void handleDataAccessException(DataAccessException ex, Context ctx) {
+        ctx.status(500);
+        ctx.result(errorJson(ex.getMessage()));
+    }
+
+    public void handleServiceException(ServiceException ex, Context ctx) {
+        ctx.status(ex.getStatusCode());
+        ctx.result(errorJson(ex.getMessage()));
+    }
+
+    public void handleException(Exception ex, Context ctx) {
+        ctx.status(500);
+        ctx.result(errorJson(ex.getMessage()));
+    }
+
+    private String errorJson(String message) {
+        String input = "Error: " + message;
+        Map<String, String> output = Map.of("message", input);
+        return gson.toJson(output);
+    }
 }
