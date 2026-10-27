@@ -57,6 +57,12 @@ public class ServerHandler {
         ctx.result(gson.toJson(createGameResult));
     }
 
+    public void joinGame(Context ctx) throws DataAccessException, ServiceException {
+        JoinGameRequest joinGameRequest = gson.fromJson(ctx.body(), JoinGameRequest.class);
+        gameService.joinGame(joinGameRequest, ctx.header("authorization"));
+        ctx.result("{}");
+    }
+
     public void handleDataAccessException(DataAccessException ex, Context ctx) {
         ctx.status(500);
         ctx.result(errorJson(ex.getMessage()));

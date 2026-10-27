@@ -49,6 +49,15 @@ public class GameService {
     }
 
 
-//    public JoinGameResult joinGame(JoinGameRequest joinGameRequest) {}
-
+    public void joinGame(JoinGameRequest joinGameRequest, String authToken) {
+//        if (authToken == null) {
+//            throw new UnauthorizedException();
+//        }
+//
+//        AuthData authData = authDAO.getAuth(authToken);
+//
+//        if (authData == null) {
+//            throw new UnauthorizedException();
+//        }
+    }
 }
