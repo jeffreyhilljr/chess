@@ -1,7 +1,19 @@
 package service;
 
+import dataaccess.AuthDAO;
+import dataaccess.UserDAO;
+
 public class UserService {
+    private final AuthDAO authDAO;
+    private final UserDAO userDAO;
+
+    public UserService (AuthDAO authDAO, UserDAO userDAO) {
+        this.authDAO = authDAO;
+        this.userDAO = userDAO;
+    }
+
 //    public RegisterResult register(RegisterRequest registerRequest) {}
 //    public LoginResult login(LoginRequest loginRequest) {}
-//    public void logout(LogoutRequest logoutRequest) {}
+//    public void logout() {}
+
 }
