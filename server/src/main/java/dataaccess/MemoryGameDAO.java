@@ -2,6 +2,7 @@ package dataaccess;
 
 import chess.ChessGame;
 import model.GameData;
+import model.GameDataSummary;
 
 import java.util.*;
 
@@ -23,8 +24,18 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     @Override
-    public Collection<GameData> listGames() {
-        return new ArrayList<>(games.values());
+    public Collection<GameDataSummary> listGames() {
+        List<GameDataSummary> gameSummaries = new ArrayList<>();
+        for (GameData game : games.values()) {
+            gameSummaries.add(new GameDataSummary(
+                    game.gameID(),
+                    game.whiteUsername(),
+                    game.blackUsername(),
+                    game.gameName()
+            ));
+        }
+
+        return gameSummaries;
     }
 
     @Override
