@@ -3,10 +3,7 @@ package server;
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import io.javalin.http.Context;
-import model.LoginRequest;
-import model.LoginResult;
-import model.RegisterRequest;
-import model.RegisterResult;
+import model.*;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
@@ -47,6 +44,11 @@ public class ServerHandler {
     public void logout(Context ctx) throws DataAccessException, ServiceException {
         userService.logout(ctx.header("authorization"));
         ctx.result("{}");
+    }
+
+    public void listGames(Context ctx) throws DataAccessException, ServiceException {
+        ListGamesResult listGamesResult = gameService.listGames(ctx.header("authorization"));
+        ctx.result(gson.toJson(listGamesResult));
     }
 
     public void handleDataAccessException(DataAccessException ex, Context ctx) {
