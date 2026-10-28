@@ -49,15 +49,36 @@ public class GameService {
     }
 
 
-    public void joinGame(JoinGameRequest joinGameRequest, String authToken) {
-//        if (authToken == null) {
-//            throw new UnauthorizedException();
-//        }
-//
-//        AuthData authData = authDAO.getAuth(authToken);
-//
-//        if (authData == null) {
-//            throw new UnauthorizedException();
-//        }
+    public void joinGame(JoinGameRequest joinGameRequest, String authToken) throws DataAccessException, ServiceException {
+        if (authToken == null) {
+            throw new UnauthorizedException();
+        }
+
+        AuthData authData = authDAO.getAuth(authToken);
+
+        if (authData == null) {
+            throw new UnauthorizedException();
+        }
+
+        ChessGame.TeamColor playerColor = joinGameRequest.playerColor();
+        int gameID = joinGameRequest.gameID();
+
+        GameData game = gameDAO.getGame(gameID);
+
+        if (game == null) {
+            throw new BadRequestException();
+        }
+
+        if (playerColor == ChessGame.TeamColor.WHITE) {
+            if (game.whiteUsername() != null) {
+                throw new AlreadyTakenException();
+            }
+        } else {
+            if (game.blackUsername() != null) {
+                throw new AlreadyTakenException();
+            }
+        }
+
+        gameDAO.updateGame(gameID, authData.username(), playerColor);
     }
 }
