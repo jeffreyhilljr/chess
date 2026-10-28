@@ -4,6 +4,7 @@ import dataaccess.*;
 import model.*;
 import service.exception.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserService {
@@ -56,7 +57,7 @@ public class UserService {
 
         UserData user = userDAO.getUser(username);
 
-        if (user == null) {
+        if (user == null || !Objects.equals(user.password(), password)) {
             throw new UnauthorizedException();
         }
 
