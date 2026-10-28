@@ -73,10 +73,12 @@ public class GameService {
             if (game.whiteUsername() != null) {
                 throw new AlreadyTakenException();
             }
-        } else {
+        } else if (playerColor == ChessGame.TeamColor.BLACK) {
             if (game.blackUsername() != null) {
                 throw new AlreadyTakenException();
             }
+        } else {
+            throw new BadRequestException();
         }
 
         gameDAO.updateGame(gameID, authData.username(), playerColor);
