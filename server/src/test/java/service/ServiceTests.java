@@ -2,10 +2,7 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.*;
-import model.AuthData;
-import model.GameData;
-import model.RegisterRequest;
-import model.UserData;
+import model.*;
 import org.junit.jupiter.api.*;
 import service.exception.*;
 
@@ -92,6 +89,14 @@ public class ServiceTests {
     public void registerMissingRequest() {
         Assertions.assertThrows(BadRequestException.class, () ->
                 userService.register(null));
+    }
+
+    @Test
+    @DisplayName("Login Success")
+    public void loginSuccess() throws ServiceException, DataAccessException {
+        userDAO.createUser(new UserData("username", "12345", "test@gmail.com"));
+        LoginResult result = userService.login(new LoginRequest("username", "12345"));
+        Assertions.assertNotNull(authDAO.getAuth(result.authToken()));
     }
 
 }
