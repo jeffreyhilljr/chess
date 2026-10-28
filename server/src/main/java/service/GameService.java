@@ -40,6 +40,10 @@ public class GameService {
             throw new UnauthorizedException();
         }
 
+        if (createGameRequest == null) {
+            throw new BadRequestException();
+        }
+
         String gameName = createGameRequest.gameName();
 
         if (gameName == null || gameName.isBlank()) {
