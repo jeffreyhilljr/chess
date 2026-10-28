@@ -42,6 +42,10 @@ public class GameService {
 
         String gameName = createGameRequest.gameName();
 
+        if (gameName == null || gameName.isBlank()) {
+            throw new BadRequestException();
+        }
+
         GameData game = new GameData(0, null, null, gameName, new ChessGame());
         GameData newGame = gameDAO.createGame(game);
 
