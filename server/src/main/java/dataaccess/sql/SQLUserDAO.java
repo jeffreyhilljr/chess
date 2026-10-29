@@ -55,7 +55,6 @@ public class SQLUserDAO implements UserDAO {
         } catch (SQLException ex) {
             throw new DataAccessException("unable to clear user data", ex);
         }
-
     }
 
     private UserData readUser(ResultSet rs) throws SQLException {

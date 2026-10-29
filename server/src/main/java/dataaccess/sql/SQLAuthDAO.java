@@ -50,7 +50,13 @@ public class SQLAuthDAO implements AuthDAO {
 
     @Override
     public void clearAuthData() throws DataAccessException {
-
+        String sql = "TRUNCATE auth";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("unable to clear auth data", ex);
+        }
     }
 
     private AuthData readAuth(ResultSet rs) throws SQLException {
