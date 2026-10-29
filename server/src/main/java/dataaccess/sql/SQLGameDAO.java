@@ -8,10 +8,23 @@ import java.sql.*;
 import java.util.*;
 
 public class SQLGameDAO implements GameDAO {
+
     private final Gson gson = new Gson();
 
     public SQLGameDAO() throws DataAccessException {
-        configureDatabase();
+        String[] createStatements = {
+                """
+            CREATE TABLE IF NOT EXISTS  game (
+              `id` int NOT NULL AUTO_INCREMENT,
+              `whiteUser` varchar(256) DEFAULT NULL,
+              `blackUser` varchar(256) DEFAULT NULL,
+              `name` varchar(256) NOT NULL,
+              `game` TEXT NOT NULL,
+              PRIMARY KEY (`id`)
+            )
+            """
+        };
+        DatabaseManager.configureDatabase(createStatements);
     }
 
     @Override
@@ -124,31 +137,5 @@ public class SQLGameDAO implements GameDAO {
                 rs.getString("whiteUser"),
                 rs.getString("blackUser"),
                 rs.getString("name"));
-    }
-
-    private final String[] createStatements = {
-            """
-            CREATE TABLE IF NOT EXISTS  game (
-              `id` int NOT NULL AUTO_INCREMENT,
-              `whiteUser` varchar(256) DEFAULT NULL,
-              `blackUser` varchar(256) DEFAULT NULL,
-              `name` varchar(256) NOT NULL,
-              `game` TEXT NOT NULL,
-              PRIMARY KEY (`id`)
-            )
-            """
-    };
-
-    private void configureDatabase() throws DataAccessException {
-        DatabaseManager.createDatabase();
-        try (Connection conn = DatabaseManager.getConnection()) {
-            for (String statement : createStatements) {
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.executeUpdate();
-                }
-            }
-        } catch (SQLException ex) {
-            throw new DataAccessException(String.format("Unable to configure database: %s", ex.getMessage()), ex);
-        }
     }
 }
