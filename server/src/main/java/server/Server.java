@@ -2,6 +2,7 @@ package server;
 
 import io.javalin.*;
 import dataaccess.*;
+import dataaccess.sql.*;
 import service.*;
 import service.exception.ServiceException;
 
@@ -10,9 +11,17 @@ public class Server {
     private final Javalin javalin;
 
     public Server() {
-        AuthDAO authDAO = new MemoryAuthDAO();
-        GameDAO gameDAO = new MemoryGameDAO();
-        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO;
+        GameDAO gameDAO;
+        UserDAO userDAO;
+
+        try {
+            authDAO = new SQLAuthDAO();
+            gameDAO = new MemoryGameDAO();
+            userDAO = new MemoryUserDAO();
+        } catch (DataAccessException ex) {
+            throw new RuntimeException("Unable to initialize database", ex);
+        }
 
         ClearService clearService = new ClearService(authDAO, gameDAO, userDAO);
         GameService gameService = new GameService(authDAO, gameDAO);
