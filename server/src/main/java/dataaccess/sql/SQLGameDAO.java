@@ -64,7 +64,18 @@ public class SQLGameDAO implements GameDAO {
 
     @Override
     public Collection<GameDataSummary> listGames() throws DataAccessException {
-        return List.of();
+        String sql = "SELECT id, whiteUser, blackUser, name FROM game";
+        var games = new ArrayList<GameDataSummary>();
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql);
+             var rs = ps.executeQuery()) {
+            while (rs.next()) {
+                games.add(readGameSummary(rs));
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("unable to get auth", ex);
+        }
+        return games;
     }
 
     @Override
@@ -84,6 +95,14 @@ public class SQLGameDAO implements GameDAO {
                 rs.getString("blackUser"),
                 rs.getString("name"),
                 gson.fromJson(rs.getString("game"), ChessGame.class));
+    }
+
+    private GameDataSummary readGameSummary(ResultSet rs) throws SQLException {
+        return new GameDataSummary(
+                rs.getInt("id"),
+                rs.getString("whiteUser"),
+                rs.getString("blackUser"),
+                rs.getString("name"));
     }
 
     private final String[] createStatements = {
