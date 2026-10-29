@@ -47,6 +47,18 @@ public class SQLGameDAO implements GameDAO {
 
     @Override
     public GameData getGame(int gameID) throws DataAccessException {
+        String sql = "SELECT id, whiteUser, blackUser, name, game FROM game WHERE id = ?";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, gameID);
+            try (var rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return readGame(rs);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("unable to get auth", ex);
+        }
         return null;
     }
 
