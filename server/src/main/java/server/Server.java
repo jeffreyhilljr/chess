@@ -18,7 +18,7 @@ public class Server {
         try {
             authDAO = new SQLAuthDAO();
             gameDAO = new SQLGameDAO();
-            userDAO = new MemoryUserDAO();
+            userDAO = new SQLUserDAO();
         } catch (DataAccessException ex) {
             throw new RuntimeException("Unable to initialize database", ex);
         }
