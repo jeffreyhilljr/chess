@@ -47,13 +47,20 @@ public class SQLUserDAO implements UserDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("unable to create user", ex);
+            throw new DataAccessException("unable to get user", ex);
         }
         return null;
     }
 
     @Override
     public void clearUserData() throws DataAccessException {
+        String sql = "TRUNCATE user";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("unable to clear user data", ex);
+        }
 
     }
 
