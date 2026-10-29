@@ -3,13 +3,8 @@ package dataaccess.sql;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import dataaccess.*;
-import model.GameData;
-import model.GameDataSummary;
-import model.UserData;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import model.*;
+import org.junit.jupiter.api.*;
 import org.mindrot.jbcrypt.BCrypt;
 import service.ClearService;
 import java.sql.SQLException;
@@ -245,7 +240,7 @@ public class SqlDAOTests {
 
     @Test
     @DisplayName("Update Nonexisting Game")
-    public void updateNonexistingGame() throws DataAccessException, SQLException {
+    public void updateNonexistingGame() {
         Assertions.assertThrows(DataAccessException.class, () ->
                 gameDAO.updateGame(1, "user", ChessGame.TeamColor.WHITE));
     }
@@ -271,5 +266,95 @@ public class SqlDAOTests {
             ps.executeUpdate();
         }
         Assertions.assertThrows(DataAccessException.class, () -> gameDAO.clearGameData());
+    }
+
+    @Test
+    @DisplayName("Create Auth Success")
+    public void createAuthSuccess() throws DataAccessException {
+        authDAO.createAuth(new AuthData("a1b2c3d4e5f6g7h8i9j0", "user"));
+        String sql = "SELECT authToken, username FROM auth WHERE authToken = ?";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "a1b2c3d4e5f6g7h8i9j0");
+            try (var rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Assertions.assertEquals("a1b2c3d4e5f6g7h8i9j0", rs.getString("authToken"));
+                    Assertions.assertEquals("user", rs.getString("username"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @DisplayName("Create Auth Missing Token")
+    public void createAuthMissingToken() {
+        Assertions.assertThrows(DataAccessException.class, () -> authDAO.createAuth(new AuthData(null, "user")));
+    }
+
+    @Test
+    @DisplayName("Get Auth Success")
+    public void getAuthSuccess() throws DataAccessException {
+        authDAO.createAuth(new AuthData("a1b2c3d4e5f6g7h8i9j0", "user"));
+        AuthData auth = authDAO.getAuth("a1b2c3d4e5f6g7h8i9j0");
+        Assertions.assertEquals("a1b2c3d4e5f6g7h8i9j0", auth.authToken());
+        Assertions.assertEquals("user", auth.username());
+    }
+
+    @Test
+    @DisplayName("Get Auth Null")
+    public void getAuthNull() throws DataAccessException {
+        Assertions.assertNull(authDAO.getAuth("a1b2c3d4e5f6g7h8i9j0"));
+    }
+
+    @Test
+    @DisplayName("Get Auth Throws Exception")
+    public void getAuthThrowsException() throws DataAccessException, SQLException {
+        String sql = "DROP TABLE auth";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.executeUpdate();
+        }
+        Assertions.assertThrows(DataAccessException.class, () -> authDAO.getAuth("a1b2c3d4e5f6g7h8i9j0"));
+    }
+
+    @Test
+    @DisplayName("Delete Auth Success")
+    public void deleteAuthSuccess() throws DataAccessException {
+        authDAO.createAuth(new AuthData("a1b2c3d4e5f6g7h8i9j0", "user"));
+        authDAO.deleteAuth("a1b2c3d4e5f6g7h8i9j0");
+        Assertions.assertNull(authDAO.getAuth("a1b2c3d4e5f6g7h8i9j0"));
+    }
+
+    @Test
+    @DisplayName("Delete Auth Throws Exception")
+    public void deleteAuthThrowsException() throws DataAccessException, SQLException {
+        String sql = "DROP TABLE auth";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.executeUpdate();
+        }
+        Assertions.assertThrows(DataAccessException.class, () -> authDAO.deleteAuth("a1b2c3d4e5f6g7h8i9j0"));
+    }
+
+    @Test
+    @DisplayName("Clear Auth Data Success")
+    public void clearAuthDataSuccess() throws DataAccessException {
+        authDAO.createAuth(new AuthData("a1b2c3d4e5f6g7h8i9j0", "user"));
+        authDAO.clearAuthData();
+        Assertions.assertNull(authDAO.getAuth("a1b2c3d4e5f6g7h8i9j0"));
+    }
+
+    @Test
+    @DisplayName("Clear Auth Data Throws Exception")
+    public void clearAuthDataThrowsException() throws DataAccessException, SQLException {
+        authDAO.createAuth(new AuthData("a1b2c3d4e5f6g7h8i9j0", "user"));
+        String sql = "DROP TABLE auth";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.executeUpdate();
+        }
+        Assertions.assertThrows(DataAccessException.class, () -> authDAO.clearAuthData());
     }
 }
