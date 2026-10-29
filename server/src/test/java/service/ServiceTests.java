@@ -2,12 +2,12 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.*;
+import dataaccess.sql.*;
 import model.*;
 import org.junit.jupiter.api.*;
+import org.mindrot.jbcrypt.BCrypt;
 import service.exception.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ServiceTests {
     private static AuthDAO authDAO;
@@ -19,14 +19,16 @@ public class ServiceTests {
     private static GameService gameService;
 
     @BeforeEach
-    public void setup() {
-        authDAO = new MemoryAuthDAO();
-        userDAO = new MemoryUserDAO();
-        gameDAO = new MemoryGameDAO();
+    public void setup() throws DataAccessException {
+        authDAO = new SQLAuthDAO();
+        gameDAO = new SQLGameDAO();
+        userDAO = new SQLUserDAO();
 
         clearService = new ClearService(authDAO, gameDAO, userDAO);
         userService = new UserService(authDAO, userDAO);
         gameService = new GameService(authDAO, gameDAO);
+
+        clearService.clearAllData();
     }
 
     @Test
@@ -57,7 +59,9 @@ public class ServiceTests {
     @DisplayName("Register Success")
     public void registerSuccess() throws ServiceException, DataAccessException {
         userService.register(new RegisterRequest("username", "12345", "test@gmail.com"));
-        Assertions.assertEquals(new UserData("username", "12345", "test@gmail.com"), userDAO.getUser("username"));
+        Assertions.assertEquals("username", userDAO.getUser("username").username());
+        Assertions.assertEquals("test@gmail.com", userDAO.getUser("username").email());
+        Assertions.assertTrue(BCrypt.checkpw("12345", userDAO.getUser("username").password()));
     }
 
     @Test
@@ -66,7 +70,9 @@ public class ServiceTests {
         userDAO.createUser(new UserData("username", "12345", "test@gmail.com"));
         Assertions.assertThrows(AlreadyTakenException.class, () ->
                 userService.register(new RegisterRequest("username", "54321", "bob@gmail.com")));
-        Assertions.assertEquals(new UserData("username", "12345", "test@gmail.com"), userDAO.getUser("username"));
+        Assertions.assertEquals("username", userDAO.getUser("username").username());
+        Assertions.assertEquals("test@gmail.com", userDAO.getUser("username").email());
+        Assertions.assertTrue(BCrypt.checkpw("12345", userDAO.getUser("username").password()));
     }
 
     @Test
@@ -98,10 +104,14 @@ public class ServiceTests {
     @DisplayName("Register Multiple")
     public void registerMultiple() throws ServiceException, DataAccessException {
         RegisterResult result1 = userService.register(new RegisterRequest("username1", "12345", "test1@gmail.com"));
-        Assertions.assertEquals(new UserData("username1", "12345", "test1@gmail.com"), userDAO.getUser("username1"));
+        Assertions.assertEquals("username1", userDAO.getUser("username1").username());
+        Assertions.assertEquals("test1@gmail.com", userDAO.getUser("username1").email());
+        Assertions.assertTrue(BCrypt.checkpw("12345", userDAO.getUser("username1").password()));
 
         RegisterResult result2 = userService.register(new RegisterRequest("username2", "54321", "test2@gmail.com"));
-        Assertions.assertEquals(new UserData("username2", "54321", "test2@gmail.com"), userDAO.getUser("username2"));
+        Assertions.assertEquals("username2", userDAO.getUser("username2").username());
+        Assertions.assertEquals("test2@gmail.com", userDAO.getUser("username2").email());
+        Assertions.assertTrue(BCrypt.checkpw("54321", userDAO.getUser("username2").password()));
 
         Assertions.assertNotEquals(result1, result2);
         Assertions.assertNotEquals(result1.authToken(), result2.authToken());
