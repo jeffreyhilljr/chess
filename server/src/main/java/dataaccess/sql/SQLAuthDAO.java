@@ -2,7 +2,6 @@ package dataaccess.sql;
 
 import dataaccess.*;
 import model.AuthData;
-
 import java.sql.*;
 
 public class SQLAuthDAO implements AuthDAO {
