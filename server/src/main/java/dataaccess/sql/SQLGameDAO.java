@@ -57,7 +57,7 @@ public class SQLGameDAO implements GameDAO {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("unable to get auth", ex);
+            throw new DataAccessException("unable to get game", ex);
         }
         return null;
     }
@@ -73,7 +73,7 @@ public class SQLGameDAO implements GameDAO {
                 games.add(readGameSummary(rs));
             }
         } catch (SQLException ex) {
-            throw new DataAccessException("unable to get auth", ex);
+            throw new DataAccessException("unable to list games", ex);
         }
         return games;
     }
@@ -85,7 +85,13 @@ public class SQLGameDAO implements GameDAO {
 
     @Override
     public void clearGameData() throws DataAccessException {
-
+        String sql = "TRUNCATE game";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("unable to clear game data", ex);
+        }
     }
 
     private GameData readGame(ResultSet rs) throws SQLException {
