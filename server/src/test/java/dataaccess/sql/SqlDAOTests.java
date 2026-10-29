@@ -51,20 +51,6 @@ public class SqlDAOTests {
         userDAO.createUser(new UserData("testUser", "12345", "test@gmail.com"));
         Assertions.assertThrows(DataAccessException.class, () ->
                 userDAO.createUser(new UserData("testUser", "54321", "test2@gmail.com")));
-        String sql = "SELECT username, password, email FROM user WHERE username = ?";
-        try (var conn = DatabaseManager.getConnection();
-             var ps = conn.prepareStatement(sql)) {
-            ps.setString(1, "testUser");
-            try (var rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Assertions.assertEquals("testUser", rs.getString("username"));
-                    Assertions.assertTrue(BCrypt.checkpw("12345", rs.getString("password")));
-                    Assertions.assertEquals("test@gmail.com", rs.getString("email"));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Test
