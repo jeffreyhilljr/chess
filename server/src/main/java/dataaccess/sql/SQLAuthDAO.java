@@ -28,6 +28,18 @@ public class SQLAuthDAO implements AuthDAO {
 
     @Override
     public AuthData getAuth(String authToken) throws DataAccessException {
+        String sql = "SELECT authToken, username FROM auth WHERE authToken = ?";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.setString(1, authToken);
+            try (var rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return readAuth(rs);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException("unable to get auth", ex);
+        }
         return null;
     }
 
