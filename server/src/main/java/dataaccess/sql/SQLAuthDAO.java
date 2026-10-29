@@ -1,12 +1,9 @@
 package dataaccess.sql;
 
-import dataaccess.AuthDAO;
-import dataaccess.DataAccessException;
-import dataaccess.DatabaseManager;
+import dataaccess.*;
 import model.AuthData;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SQLAuthDAO implements AuthDAO {
 
@@ -16,7 +13,17 @@ public class SQLAuthDAO implements AuthDAO {
 
     @Override
     public void createAuth(AuthData authData) throws DataAccessException {
-
+        String authToken = authData.authToken();
+        String username = authData.username();
+        String sql = "INSERT INTO auth (authToken, username) VALUES (?, ?, ?)";
+        try (var conn = DatabaseManager.getConnection();
+             var ps = conn.prepareStatement(sql)) {
+            ps.setString(1, authToken);
+            ps.setString(2, username);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new DataAccessException("unable to create auth", ex);
+        }
     }
 
     @Override
@@ -32,6 +39,12 @@ public class SQLAuthDAO implements AuthDAO {
     @Override
     public void clearAuthData() throws DataAccessException {
 
+    }
+
+    private AuthData readAuth(ResultSet rs) throws SQLException {
+        return new AuthData(
+                rs.getString("authToken"),
+                rs.getString("username"));
     }
 
     private final String[] createStatements = {
